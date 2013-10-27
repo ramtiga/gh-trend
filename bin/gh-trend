@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path("../../lib/", __FILE__))
+
+require 'slop'
+require 'gh-trend'
+
+argv = ARGV.dup
+
+if argv.size == 0
+  exit!
+end
+
+slop = Slop.new(:strict => true, :help => true) do |s|
+  s.banner "Usage: gh-trend <command> [options] <args>"
+  s.on :l, :lang=, "Select language."
+  s.on :d, :desc, "Display description."
+  s.on :n, :num=, "Limit numbers."
+  s.on :b, :brows=, "Open repository on browser."
+  s.on :s, :star=, "Star a repository."
+  s.on :u, :unstar=, "Unstar a repository."
+end
+
+begin
+  slop.parse!(argv)
+rescue => e
+  puts e
+  exit!
+end
+
+options = slop.to_hash
+options.delete(:help)
+
+GhTrend::Command.run(options)
+
