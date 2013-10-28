@@ -23,8 +23,7 @@ module GhTrend
     def show
       cnt = 1
 
-      puts "Trending #{@options[:lang].capitalize} repositories on GitHub today"
-      puts "-" * 56
+      title_dsp
 
       @repo_nm.each do |t|
 
@@ -110,6 +109,11 @@ module GhTrend
       else
         DSP_POS - (4 + len)
       end
+    end
+
+    def title_dsp
+      puts "Trending #{@options[:lang].capitalize} repositories on GitHub today"
+      puts "-" * 56
     end
 
   end
