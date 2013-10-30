@@ -1,4 +1,4 @@
-# GhTrend
+# GhTrend [![Build Status](https://secure.travis-ci.org/ramtiga/gh-trend.png)](https://travis-ci.org/ramtiga/gh-trend)
 
 Get Trending repositories on Github for CLI.
 
