@@ -3,9 +3,9 @@
 require "octokit"
 
 module GhTrend
-  class GithubApi# < Octokit::Client
+  class GithubApi
     def initialize
-      @client = Octokit::Client.new :netrc => true
+      @client = Octokit::Client.new :netrc => File.exist?(ENV["HOME"] + "/.netrc")
       begin
         @authenticate = !@client.user.nil?
       rescue => e
