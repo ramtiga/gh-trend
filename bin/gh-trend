@@ -7,10 +7,6 @@ require 'gh-trend'
 
 argv = ARGV.dup
 
-if argv.size == 0
-  exit!
-end
-
 slop = Slop.new(:strict => true, :help => true) do |s|
   s.banner "Usage: gh-trend <command> [options] <args>"
   s.on :l, :lang=, "Select language."
@@ -19,6 +15,11 @@ slop = Slop.new(:strict => true, :help => true) do |s|
   s.on :b, :brows=, "Open repository on browser."
   s.on :s, :star=, "Star a repository."
   s.on :u, :unstar=, "Unstar a repository."
+end
+
+if argv.size == 0
+  puts slop
+  exit!
 end
 
 begin
@@ -32,4 +33,3 @@ options = slop.to_hash
 options.delete(:help)
 
 GhTrend::Command.run(options)
-
