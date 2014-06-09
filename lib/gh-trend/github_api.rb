@@ -8,7 +8,7 @@ module GhTrend
       @client = Octokit::Client.new :netrc => File.exist?(ENV["HOME"] + "/.netrc")
       begin
         @authenticate = !@client.user.nil?
-      rescue => e
+      rescue
         @authenticate = false
       end
     end
@@ -34,6 +34,3 @@ module GhTrend
 
   end
 end
-
-
-
