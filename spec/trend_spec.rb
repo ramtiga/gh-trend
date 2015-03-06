@@ -26,11 +26,11 @@ describe GhTrend::Trend do
     it 'get trend data' do
       @client.get_trend
 
-      @client.repo_nm[0].should == "Gazler/githug"
-      @client.repo_nm[1].should == "pawurb/termit"
-      @client.repo_nm[2].should == "webnuts/post_json"
+      @client.repo_nm[0].should == "tom-lord/regexp-examples"
+      @client.repo_nm[1].should == "Homebrew/homebrew"
+      @client.repo_nm[2].should == "mattbrictson/airbrussh"
 
-      @client.repo_desc[0].should == "Git your game on!"
+      @client.repo_desc[0].should == "Generate strings that match a given regular expression"
     end
   end
   
