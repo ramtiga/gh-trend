@@ -1,11 +1,9 @@
 # coding: utf-8
-
 require "nokogiri"
 require "launchy"
 require "httparty"
 
 module GhTrend
-
   class Trend
     BASE_URL = "https://github.com/trending"
     DSP_POS = 50
@@ -49,39 +47,33 @@ module GhTrend
     end
 
     def brows?
-      if @options[:brows]
-        Launchy.open "https://github.com/" + @repo_url[@options[:brows].to_i - 1]
-        true
-      else
-        false
-      end
+      return false unless @options[:brows]
+      Launchy.open "https://github.com" + @repo_url[@options[:brows].to_i - 1]
+      true
     end
 
     def star?
-      if @options[:star]
-        @client.star(@repo_nm[@options[:star].to_i - 1])
-        @repo_nm[@options[:star].to_i - 1]
-      else
-        false
-      end
+      return false unless @options[:star]
+      @client.star(@repo_nm[@options[:star].to_i - 1])
+      @repo_nm[@options[:star].to_i - 1]
+      true
     end
 
     def unstar?
-      if @options[:unstar]
-        @client.unstar(@repo_nm[@options[:unstar].to_i - 1])
-        @repo_nm[@options[:unstar].to_i - 1]
-      else
-        false
-      end
+      return false unless @options[:unstar]
+      @client.unstar(@repo_nm[@options[:unstar].to_i - 1])
+      @repo_nm[@options[:unstar].to_i - 1]
+      true
     end
 
     def get_trend
-      # doc = Nokogiri::HTML(open(geturl))
       doc = Nokogiri::HTML(HTTParty.get(geturl))
-      doc.css('div[class="leaderboard-list-content"]').each do |html|
-        @repo_nm << html.css('span[class="owner-name"]').text + "/" + html.css('strong').text
-        @repo_url << html.css('a[class="repository-name"]').text
-        @repo_desc << html.css('p[class="repo-leaderboard-description"]').text
+      doc.css('li[class="repo-list-item"]').each do |html|
+        repo_url = html.css('h3 > a').attribute('href').value
+        m = repo_url.match(/\/(.+)\/(.+)/)
+        @repo_nm << m[1] + "/" + m[2]
+        @repo_url << repo_url
+        @repo_desc << html.css('p[class="repo-list-description"]').text.strip
       end
     end
     
@@ -91,11 +83,7 @@ module GhTrend
     end
 
     def make_spaces(n)
-      if n < 10
-        " " * 3
-      else
-        " " * 4
-      end
+      n < 10 ? " " * 3 : " " * 4
     end
 
     def limit_number?(n)
@@ -104,11 +92,7 @@ module GhTrend
     end
 
     def make_pos(cnt, len)
-      if cnt < 10
-        DSP_POS - (3 + len)
-      else
-        DSP_POS - (4 + len)
-      end
+      cnt < 10 ? DSP_POS - (3 + len) : DSP_POS - (4 + len)
     end
 
     def title_dsp
